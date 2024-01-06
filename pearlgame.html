@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        color: #333;
+    }
+
+    .draggableContainer,
+    .droppableContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+    }
+
+    .box,
+.droppable {
+    background-color: lightpink;
+    height: 30px;
+    width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    position: relative;
+    z-index: 2;
+    border-radius: 5px;
+    margin-bottom: 10px; 
+    font-size: 16px; /* Change font size */
+    font-weight: bold; /* Bold text */
+    color: #333; /* Text color */
+    border: 1px solid #ccc; /* Add a border */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    transition: background-color 0.3s ease; /* Smooth background color change */
+    text-transform: capitalize;
+}
+
+
+.box:hover,
+.droppable:hover {
+    background-color: #ffb6c1; /* Lightpink color shade */
+}
+
+    .droppable {
+        background-color: bisque;
+    }
+
+    .draggableFormat {
+        font-weight: bold;
+        color: darkorange;
+        border: 5px dotted white;
+    }
+
+    #scoreSection {
+        z-index: 1;
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        color: black;
+    }
+
+    #remarksDiv {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: lightblue;
+        border-radius: 5px;
+    }
+</style>
+<body>
+    <div class="draggableContainer">
+        <div class="box" draggable="true" id="drag1">Emilio Aguinaldo</div>
+        <div class="box" draggable="true" id="drag2">Manuel Quezon</div>
+        <div class="box" draggable="true" id="drag3">Jose P. Laurel</div>
+        <div class="box" draggable="true" id="drag4">Sergio Osmeña</div>
+        <div class="box" draggable="true" id="drag5">Manuel Roxas</div>
+        <div class="box" draggable="true" id="drag6">Elpidio Quirino</div>
+        <div class="box" draggable="true" id="drag7">Ramon Magsaysay</div>
+        <div class="box" draggable="true" id="drag8">Carlos P. Garcia</div>
+        <div class="box" draggable="true" id="drag9">Diosdado Macapagal</div>
+        <div class="box" draggable="true" id="drag10">Ferdinand Marcos</div>
+        <div class="box" draggable="true" id="drag11">Corazon Aquino</div>
+        <div class="box" draggable="true" id="drag12">Fidel Ramos</div>
+        <div class="box" draggable="true" id="drag13">Joseph Estrada</div>
+        <div class="box" draggable="true" id="drag14">Gloria Arroyo</div>
+        <div class="box" draggable="true" id="drag15">Benigno Aquino III</div>
+        <div class="box" draggable="true" id="drag16">Rodrigo Duterte</div>
+        <div class="box" draggable="true" id="drag17">Ferdinand Marcos Jr</div>
+
+
+    </div>
+
+    <div class="droppableContainer">
+        <div class="droppableContainer">
+        <div class="droppable" id="drop1" data-draggable-id="drop1">1</div>
+        <div class="droppable" id="drop2" data-draggable-id="drop2">2</div>
+        <div class="droppable" id="drop3" data-draggable-id="drop3">3</div>
+        <div class="droppable" id="drop4" data-draggable-id="drop4">4</div>
+        <div class="droppable" id="drop5" data-draggable-id="drop5">5</div>
+        <div class="droppable" id="drop6" data-draggable-id="drop6">6</div>
+        <div class="droppable" id="drop7" data-draggable-id="drop7">7</div>
+        <div class="droppable" id="drop8" data-draggable-id="drop8">8</div>
+        <div class="droppable" id="drop9" data-draggable-id="drop9">9</div>
+        <div class="droppable" id="drop10" data-draggable-id="drop10">10</div>
+        <div class="droppable" id="drop11" data-draggable-id="drop11">11</div>
+        <div class="droppable" id="drop12" data-draggable-id="drop12">12</div>
+        <div class="droppable" id="drop13" data-draggable-id="drop13">13</div>
+        <div class="droppable" id="drop14" data-draggable-id="drop14">14</div>
+        <div class="droppable" id="drop15" data-draggable-id="drop15">15</div>
+        <div class="droppable" id="drop16" data-draggable-id="drop16">16</div>
+        <div class="droppable" id="drop17" data-draggable-id="drop17">17</div>
+    </div>
+
+        <div class="droppable" id="remarksDiv"></div>
+
+
+
+
+    </div>
+    <div id="scoreSection">Score: <span id="scoreValue">0</span></div> 
+
+</body>
+
+<script>
+    const draggableElement = document.querySelectorAll('.box');
+const droppableElement = document.querySelectorAll('.droppable');
+const remarksDiv = document.getElementById('remarksDiv');
+let score = 0;
+
+draggableElement.forEach(element => {
+    element.addEventListener('dragstart', (drgStrt) => {
+        drgStrt.dataTransfer.setData('text', drgStrt.target.id);
+        drgStrt.currentTarget.classList.add('draggableFormat');
+    });
+
+    element.addEventListener('dragend', (drgendEvt) => {
+        drgendEvt.currentTarget.classList.remove('draggableFormat');
+    });
+});
+
+droppableElement.forEach(element => {
+    element.addEventListener('dragover', (dragOver) => {
+        dragOver.preventDefault();
+    });
+
+    element.addEventListener('drop', (dropEvt) => {
+        dropEvt.preventDefault();
+        const droppedElementId = dropEvt.dataTransfer.getData('text');
+        const dropZoneId = dropEvt.target.getAttribute('data-draggable-id');
+        const droppedElement = document.getElementById(droppedElementId);
+
+        dropEvt.target.appendChild(droppedElement);
+
+        if (dropZoneId === droppedElementId.replace('drag', 'drop')) {
+            score++;
+            remarksDiv.innerText = 'Tama';
+            scoreSection.innerText = `Score: ${score}`;
+        } else {
+            remarksDiv.innerText = 'Mali';
+        }
+    });
+});
+</script>
+</html>
